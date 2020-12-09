@@ -10,8 +10,11 @@ import webbrowser
 import os
 import glob
 import urllib.request
+from ttkthemes import ThemedStyle
 
 root = tk.Tk()
+style = ThemedStyle(root)
+style.set_theme("adapta")
 root.title('EduReco')
 root.geometry("450x700+500+300")
 
