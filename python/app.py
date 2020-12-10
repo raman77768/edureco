@@ -17,8 +17,13 @@ style = ThemedStyle(root)
 style.set_theme("adapta")
 root.title('EduReco')
 root.geometry("450x700+500+300")
+try:
+    os.mkdir('images')
+except:pass
+icon = PhotoImage(file='icon.png')
+root.iconphoto(False,icon)
 
-conn = sq.connect('todo.db')
+conn = sq.connect('topics.db')
 cur = conn.cursor()
 cur.execute('create table if not exists tasks (title text)')
 cur.execute('create table if not exists titles (title text)')
