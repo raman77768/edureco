@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ('c:\\users\\raman\\appdata\\local\\programs\\python\\python37\\tcl\\tcl8.6\\..\\tcl8',
  'tcl8',
  [],
@@ -17,3 +18,24 @@
   ('tcl8\\8.4\\platform\\shell-1.1.4.tm',
    'c:\\users\\raman\\appdata\\local\\programs\\python\\python37\\tcl\\tcl8.6\\..\\tcl8\\8.4\\platform\\shell-1.1.4.tm',
    'DATA')])
+=======
+('c:\\users\\raman\\appdata\\local\\programs\\python\\python37\\tcl\\tcl8.6\\..\\tcl8',
+ 'tcl8',
+ [],
+ 'DATA',
+ [('tcl8\\8.6\\http-2.9.0.tm',
+   'c:\\users\\raman\\appdata\\local\\programs\\python\\python37\\tcl\\tcl8.6\\..\\tcl8\\8.6\\http-2.9.0.tm',
+   'DATA'),
+  ('tcl8\\8.5\\msgcat-1.6.1.tm',
+   'c:\\users\\raman\\appdata\\local\\programs\\python\\python37\\tcl\\tcl8.6\\..\\tcl8\\8.5\\msgcat-1.6.1.tm',
+   'DATA'),
+  ('tcl8\\8.5\\tcltest-2.5.0.tm',
+   'c:\\users\\raman\\appdata\\local\\programs\\python\\python37\\tcl\\tcl8.6\\..\\tcl8\\8.5\\tcltest-2.5.0.tm',
+   'DATA'),
+  ('tcl8\\8.4\\platform-1.0.14.tm',
+   'c:\\users\\raman\\appdata\\local\\programs\\python\\python37\\tcl\\tcl8.6\\..\\tcl8\\8.4\\platform-1.0.14.tm',
+   'DATA'),
+  ('tcl8\\8.4\\platform\\shell-1.1.4.tm',
+   'c:\\users\\raman\\appdata\\local\\programs\\python\\python37\\tcl\\tcl8.6\\..\\tcl8\\8.4\\platform\\shell-1.1.4.tm',
+   'DATA')])
+>>>>>>> 000424e4ca70d0134938bd0d9731e950757f3c7e
