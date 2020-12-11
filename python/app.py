@@ -8,13 +8,14 @@ import os
 import glob
 from urllib.request import urlretrieve
 from ttkthemes import ThemedStyle
-from tkinter import messagebox
+from tkinter import messagebox,Scrollbar
 
 root = tk.Tk()
 style = ThemedStyle(root)
 style.set_theme("adapta")
 root.title('EduReco')
 root.geometry("450x700+500+300")
+
 try:
     os.mkdir('images')
 except:pass
