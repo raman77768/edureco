@@ -1,6 +1,5 @@
 import tkinter as tk
 from tkinter import ttk
-from tkinter import messagebox
 import sqlite3 as sq
 from extract import extract_videos
 from PIL import ImageTk, Image
@@ -9,6 +8,7 @@ import os
 import glob
 from urllib.request import urlretrieve
 from ttkthemes import ThemedStyle
+from tkinter import messagebox
 
 root = tk.Tk()
 style = ThemedStyle(root)
@@ -37,7 +37,7 @@ video_labels = []
 
 def addTask():
     word = e1.get()
-    if len(word)==0:messagebox.showinfo('Empty Entry', 'Enter task name')
+    if len(word)==0:tk.messagebox.showinfo('Empty Entry', 'Enter task name')
     else:
         link,img,video_name = extract_videos(word)
         links.append(link)
@@ -75,7 +75,7 @@ def delOne():
             cur.execute('delete from thumbnails where title = ?',(img_link,))
             cur.execute('delete from videos where title = ?',(video_title,))
 
-    except:messagebox.showinfo('Cannot Delete', 'No Task Item Selected')
+    except:tk.messagebox.showinfo('Cannot Delete', 'No Task Item Selected')
 
 def deleteAll():
     mb = messagebox.askyesno('Delete All','Are you sure?')
