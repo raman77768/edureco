@@ -2,14 +2,12 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 import sqlite3 as sq
-from extract import extract_videos,extract_img
-from tkinter import *
-from tkinter.ttk import *
+from extract import extract_videos
 from PIL import ImageTk, Image
 import webbrowser
 import os
 import glob
-import urllib.request
+from urllib.request import urlretrieve
 from ttkthemes import ThemedStyle
 
 root = tk.Tk()
@@ -20,7 +18,7 @@ root.geometry("450x700+500+300")
 try:
     os.mkdir('images')
 except:pass
-icon = PhotoImage(file='icon.png')
+icon = tk.PhotoImage(file='icon.png')
 root.iconphoto(False,icon)
 
 conn = sq.connect('topics.db')
@@ -28,22 +26,29 @@ cur = conn.cursor()
 cur.execute('create table if not exists tasks (title text)')
 cur.execute('create table if not exists titles (title text)')
 cur.execute('create table if not exists thumbnails (title text)')
+cur.execute('create table if not exists videos (title text)')
+
 task = []
 links = []
 thumbnails = []
+video_names = []
+buttons = []
+video_labels = []
 
 def addTask():
     word = e1.get()
     if len(word)==0:messagebox.showinfo('Empty Entry', 'Enter task name')
     else:
-        link,id = extract_videos(word)
-        img = extract_img(id)
+        link,img,video_name = extract_videos(word)
         links.append(link)
         task.append(word)
         thumbnails.append(img)
+        video_names.append(video_name)
         cur.execute('insert into tasks values (?)', (word,))
         cur.execute('insert into titles values (?)', (link,))
         cur.execute('insert into thumbnails values (?)', (img,))
+        cur.execute('insert into videos values (?)', (video_name,))
+
         listUpdate()
         e1.delete(0,'end')
 
@@ -59,57 +64,70 @@ def delOne():
             ind=task.index(val)
             del_title = links[ind]
             img_link = thumbnails[ind]
+            video_title = video_names[ind]
             links.pop(ind)
             thumbnails.pop(ind)
+            video_names.pop(ind)
             task.remove(val)
             listUpdate()
             cur.execute('delete from tasks where title = ?', (val,))
             cur.execute('delete from titles where title = ?', (del_title,))
             cur.execute('delete from thumbnails where title = ?',(img_link,))
+            cur.execute('delete from videos where title = ?',(video_title,))
+
     except:messagebox.showinfo('Cannot Delete', 'No Task Item Selected')
 
 def deleteAll():
     mb = messagebox.askyesno('Delete All','Are you sure?')
     if mb==True:
-        while(len(task)!=0):
-            task.pop()
-            links.pop()
-            thumbnails.pop()
+        task.clear()
+        links.clear()
+        thumbnails.clear()
+        video_names.clear()
+
         cur.execute('delete from tasks')
         cur.execute('delete from titles')
         cur.execute('delete from thumbnails')
+        cur.execute('delete from videos')
+
         listUpdate()
 
 def clearList():
     t.delete(0,'end')
 
-
 def bye():
-    print(task)
+    #print(video_names)
     root.destroy()
 
 def retrieveDB():
-    while(len(task)!=0):
-        task.pop()
-        links.pop()
-        thumbnails.pop()
+    task.clear()
+    links.clear()
+    thumbnails.clear()
+    video_names.clear()
+
     for row in cur.execute('select title from tasks'):
         task.append(row[0])
     for row in cur.execute('select title from titles'):
         links.append(row[0])
     for row in cur.execute('select title from thumbnails'):
         thumbnails.append(row[0])
+    for row in cur.execute('select title from videos'):
+        video_names.append(row[0])
 
 def urlopen(url):
     webbrowser.open_new_tab(url)
 
-buttons = []
 def delete_but():
     for i in buttons:
         i.destroy()
 
+def delete_video_names():
+    for i in video_labels:
+        i.destroy()
+
 def images():
     delete_but()
+    delete_video_names()
     folder = glob.glob('images/*')
     for f in folder:
         os.remove(f)
@@ -117,26 +135,29 @@ def images():
     os.chdir('images')
     images=[]
     while(i<len(links)):
-        urllib.request.urlretrieve(thumbnails[i],links[i][-11:]+'.png')
+        urlretrieve(thumbnails[i],links[i][-11:]+'.png')
         images.append(links[i][-11:]+'.png')
         i+=1
-    i=0
+    count,i=0,0
     x_val,y_val=50,250
-    count=0
     for img in images:
         image = Image.open(img)
         image = image.resize((120, 120), Image.ANTIALIAS)
         my_img = ImageTk.PhotoImage(image)
-        url_button = Button(root,image=my_img,command=lambda url=links[i]:urlopen(url))
+        url_button = ttk.Button(root,image=my_img,command=lambda url=links[i]:urlopen(url))
         url_button.image=my_img
+        name_label = ttk.Label(root, text = video_names[i])
+        name_label.config(width=24)
         if url_button not in buttons:
             if count>0 and count%2==0:
-                y_val+=150
-                x_val-=150
+                y_val+=165
+                x_val-=160
             elif count>0 and count%2!=0:
-                x_val+=150
+                x_val+=160
             url_button.place(x=x_val,y=y_val)
+            name_label.place(x=x_val,y=y_val+140)
             buttons.append(url_button)
+            video_labels.append(name_label)
             count+=1
         i+=1
     os.chdir("..")
