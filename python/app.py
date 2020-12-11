@@ -139,27 +139,33 @@ def images():
         urlretrieve(thumbnails[i],links[i][-11:]+'.png')
         images.append(links[i][-11:]+'.png')
         i+=1
-    count,i=0,0
-    x_val,y_val=50,250
-    for img in images:
+    i=0
+    count={
+        1:[50,250],
+        2:[50,410],
+        3:[50,570],
+        4:[50,730],
+        5:[50,890]
+    }
+    x_count,y_count=1,1
+    for img in images[:35]:
         image = Image.open(img)
         image = image.resize((120, 120), Image.ANTIALIAS)
         my_img = ImageTk.PhotoImage(image)
         url_button = ttk.Button(root,image=my_img,command=lambda url=links[i]:urlopen(url))
         url_button.image=my_img
         name_label = ttk.Label(root, text = video_names[i])
-        name_label.config(width=24)
+        name_label.config(width=23)
         if url_button not in buttons:
-            if count>0 and count%2==0:
-                y_val+=165
-                x_val-=160
-            elif count>0 and count%2!=0:
-                x_val+=160
-            url_button.place(x=x_val,y=y_val)
-            name_label.place(x=x_val,y=y_val+140)
+            if x_count>9:
+                y_count+=1
+                x_count=1
+            x_val,y_val=count[y_count][0],count[y_count][1]
+            url_button.place(x=x_val+(150*(x_count-1)),y=y_val)
+            name_label.place(x=x_val+(150*(x_count-1)),y=y_val+140)
             buttons.append(url_button)
             video_labels.append(name_label)
-            count+=1
+            x_count+=1
         i+=1
     os.chdir("..")
 
