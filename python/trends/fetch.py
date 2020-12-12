@@ -15,7 +15,3 @@ class trends:
                 trends.append(i.lower())
 
         return trends
-
-
-obj=trends()
-print(obj.get_results('algebra'))
