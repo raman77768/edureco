@@ -15,4 +15,3 @@ class trends:
                 trends.append(i.lower())
 
         return trends
-
