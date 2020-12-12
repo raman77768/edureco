@@ -14,7 +14,7 @@ root = tk.Tk()
 style = ThemedStyle(root)
 style.set_theme("adapta")
 root.title('EduReco')
-root.geometry("450x700+500+300")
+root.geometry("1400x750+500+300")
 
 try:
     os.mkdir('images')
@@ -142,13 +142,11 @@ def images():
     i=0
     count={
         1:[50,250],
-        2:[50,410],
-        3:[50,570],
-        4:[50,730],
-        5:[50,890]
+        2:[50,420],
+        3:[50,590],
     }
     x_count,y_count=1,1
-    for img in images[:35]:
+    for img in images[:27]:
         image = Image.open(img)
         image = image.resize((120, 120), Image.ANTIALIAS)
         my_img = ImageTk.PhotoImage(image)
@@ -169,11 +167,18 @@ def images():
         i+=1
     os.chdir("..")
 
-
 l1 = ttk.Label(root, text = 'EduReco')
 l2 = ttk.Label(root, text='Enter Topic Title: ')
-e1 = ttk.Entry(root, width=21)
-t = tk.Listbox(root, height=11, selectmode='SINGLE')
+e1 = ttk.Entry(root, width=22)
+
+frame = tk.Frame(root)
+t = tk.Listbox(frame, height=11, selectmode='SINGLE', width=50)
+t.pack(side="left", fill="y")
+scrollbar = Scrollbar(frame, orient="vertical")
+scrollbar.config(command=t.yview)
+scrollbar.pack(side="right", fill="y")
+t.config(yscrollcommand=scrollbar.set)
+
 b1 = ttk.Button(root, text='Add Topic', width=20, command=addTask)
 b2 = ttk.Button(root, text='Delete', width=20, command=delOne)
 b3 = ttk.Button(root, text='Delete all', width=20, command=deleteAll)
@@ -191,7 +196,7 @@ b2.place(x=50, y=140)
 b3.place(x=50, y=170)
 b4.place(x=50, y =200)
 l1.place(x=50, y=10)
-t.place(x=220, y = 50)
+frame.place(x=220, y = 60)
 
 root.mainloop()
 
