@@ -16,6 +16,3 @@ class trends:
 
         return trends
 
-
-obj=trends()
-print(obj.get_results('algebra'))
