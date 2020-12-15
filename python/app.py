@@ -10,6 +10,9 @@ from urllib.request import urlretrieve
 from ttkthemes import ThemedStyle
 from tkinter import messagebox,Scrollbar
 from collections import OrderedDict
+from trends.fetch import Trends
+
+trends = Trends()
 
 root = tk.Tk()
 style = ThemedStyle(root)
@@ -48,10 +51,19 @@ def addTask():
         listUpdate()
         e1.delete(0,'end')
 
+def get_recommended():
+    recommended_list = []
+    for i in titles:
+        res = trends.get_results(i)
+        recommended_list += res
+    return recommended_list
+
 def listUpdate():
     clearList()
     for i in titles:
         t.insert('end', i)
+    for i in set(get_recommended()):
+        t2.insert('end', i)
     images()
 
 def delOne():
@@ -84,6 +96,7 @@ def deleteAll():
 
 def clearList():
     t.delete(0,'end')
+    t2.delete(0,'end')
 
 def bye():
     #print(video_names)
@@ -147,6 +160,8 @@ def images():
 
 l1 = ttk.Label(root, text = 'EduReco')
 l2 = ttk.Label(root, text='Enter Topic Title: ')
+l3 = ttk.Label(root, text='Added Topics')
+l4 = ttk.Label(root, text='Recommended Topics')
 e1 = ttk.Entry(root, width=22)
 
 frame = tk.Frame(root)
@@ -156,6 +171,14 @@ scrollbar = Scrollbar(frame, orient="vertical")
 scrollbar.config(command=t.yview)
 scrollbar.pack(side="right", fill="y")
 t.config(yscrollcommand=scrollbar.set)
+
+frame2 = tk.Frame(root)
+t2 = tk.Listbox(frame2, height=11, selectmode='SINGLE', width=50)
+t2.pack(side="left", fill="y")
+scrollbar2 = Scrollbar(frame2, orient="vertical")
+scrollbar2.config(command=t2.yview)
+scrollbar2.pack(side="right", fill="y")
+t2.config(yscrollcommand=scrollbar2.set)
 
 b1 = ttk.Button(root, text='Add Topic', width=20, command=addTask)
 b2 = ttk.Button(root, text='Delete', width=20, command=delOne)
@@ -168,6 +191,8 @@ listUpdate()
 
 
 l2.place(x=50, y=50)
+l3.place(x=330,y=45)
+l4.place(x=695,y=45)
 e1.place(x=50, y=80)
 b1.place(x=50, y=110)
 b2.place(x=50, y=140)
@@ -175,6 +200,7 @@ b3.place(x=50, y=170)
 b4.place(x=50, y =200)
 l1.place(x=50, y=10)
 frame.place(x=220, y = 60)
+frame2.place(x=600, y=60)
 
 root.mainloop()
 
